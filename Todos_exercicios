@@ -1,0 +1,54 @@
+#1. Criar banco de dados Venda
+#2. Criar a tabela Produto
+CREATE TABLE Produto(
+	Codigo_Produto INTEGER PRIMARY KEY,
+    Descricao_Produto VARCHAR(30),
+    Preco_Produto FLOAT
+);
+
+#3. Criar a tabela Nota fiscal
+CREATE TABLE Nota_fiscal(
+	Numero_NF INTEGER PRIMARY KEY,
+    Data_NF DATE,
+    Valor_NF FLOAT
+);
+
+#4. Criar a tabela Itens
+CREATE TABLE Itens(
+	Produto_Codigo_Produto INTEGER,
+    Nota_fiscal_Numero_NF INTEGER,
+	Num_Item INTEGER,
+    Qtde_Item INTEGER
+);
+ALTER TABLE Itens ADD CONSTRAINT PK_Itens PRIMARY KEY(Produto_Codigo_Produto, Nota_fiscal_Numero_NF);
+
+#5. Alterar o campo Descricao Produto da tabela Produto para o tipo Varchar(50)
+ALTER TABLE Produto  MODIFY COLUMN Descricao_Produto VARCHAR(50);
+
+#6. Alterar a tabela Nota Fiscal, adicionando o campo ICMS, do tipo float depois do campo Numero NF.
+ALTER TABLE Nota_Fiscal ADD ICMS FLOAT AFTER Numero_NF;
+
+#Alterar a tabela Produto, adicionando o campo Peso, do tipo float
+ALTER TABLE Produto add PESO FLOAT;
+
+#Fazer com que a chave primária da tabela Itens deixe de ser composta por codigo do produto mais numero da nota fiscal e passe a ser Num item
+ALTER TABLE Itens DROP PRIMARY KEY;
+ALTER TABLE Itens add CONSTRAINT PK_Itens PRIMARY KEY(Num_Item);
+
+#Apresentar a estrutura da tabela Produto
+SELECT * FROM Produto;
+
+# Apresentar a estrutura da tabela Nota Fiscal
+SELECT * FROM Nota_Fiscal;
+
+# Alterar o nome do campo Valor NF da tabela Nota fiscal para ValorTotal NF
+ALTER TABLE Nota_Fiscal RENAME COLUMN Valor_NF to ValorTotal_NF;
+
+#Remover o campo Data NF da tabela Nota fiscal
+ALTER TABLE Nota_Fiscal DROP COLUMN Data_NF;
+
+#Remover a tabela Itens do modelo de dados
+DROP TABLE Itens;
+
+#Alterar o nome da tabela Nota fiscal para Venda.
+RENAME TABLE Nota_Fiscal to Vendas;
