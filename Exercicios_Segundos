@@ -1,0 +1,77 @@
+CREATE TABLE duplicata(
+Nome CHAR(40),
+Numero INTEGER NOT NULL,
+Valor DECIMAL(10,2),
+Vencimento DATE,
+Banco CHAR(10)
+);
+
+ALTER TABLE duplicatA ADD CONSTRAINT Pk PRIMARY KEY(Numero);
+ALTER TABLE duplicata Modify COLUMN Banco CHAR(20);
+INSERT INTO duplicata VALUES ('ABC PAPELARIA', 100100, 5000.00, '2017-01-20', 'ITAU');
+INSERT INTO duplicata VALUES ('LIVRARIA FERNANDES', 100110, 2500.00, '2017-01-22', 'ITAU');
+INSERT INTO duplicata VALUES ('LIVRARIA FERNANDES', 100120, 1500.00, '2016-10-15', 'BRADESCO');
+INSERT INTO duplicata VALUES ('ABC PAPELARIA', 100130, 8000.00, '2016-10-15', 'SANTANDER');
+INSERT INTO duplicata VALUES ('LER E SABER', 200120, 10500.00, '2018-04-26', 'BANCO DO BRASIL');
+INSERT INTO duplicata VALUES ('LIVROS E CIA', 200125, 2000.00, '2018-04-26', 'BANCO DO BRASIL');
+INSERT INTO duplicata VALUES ('LER E SABER', 200130, 11000.00, '2018-09-26', 'ITAU');
+INSERT INTO duplicata VALUES ('PAPELARIA SILVA', 250350, 1500.00, '2018-01-26', 'BRADESCO');
+INSERT INTO duplicata VALUES ('LIVROS MM', 250360, 500.00, '2018-12-18', 'SANTANDER');
+INSERT INTO duplicata VALUES ('LIVROS MM', 250370, 3400.00, '2018-04-26', 'SANTANDER');
+INSERT INTO duplicata VALUES ('PAPELARIA SILVA', 250380, 3500.00, '2018-04-26', 'BANCO DO BRASIL');
+INSERT INTO duplicata VALUES ('LIVROS E CIA', 453360, 1500.00, '2018-06-15', 'ITAU');
+INSERT INTO duplicata VALUES ('LIVROS MM', 453365, 5400.00, '2018-06-15', 'BRADESCO');
+INSERT INTO duplicata VALUES ('PAPELARIA SILVA', 453370, 2350.00, '2017-12-27', 'ITAU');
+INSERT INTO duplicata VALUES ('LIVROS E CIA', 453380, 1550.00, '2017-12-27', 'BANCO DO BRASIL');
+INSERT INTO duplicata VALUES ('ABC PAPELARIA', 980130, 4000.00, '2016-12-11', 'ITAU');
+INSERT INTO duplicata VALUES ('LIVRARIA FERNANDES', 770710, 2500.00, '2016-11-15', 'SANTANDER');
+INSERT INTO duplicata VALUES ('ABC PAPELARIA', 985001, 3000.00, '2016-09-11', 'ITAU');
+INSERT INTO duplicata VALUES ('PAPEL E AFINS', 985002, 2500.00, '2016-03-12', 'SANTANDER');
+INSERT INTO duplicata VALUES ('LER E SABER', 888132, 2500.00, '2017-03-05', 'ITAU');
+
+#Listar nome,vencimento e valor de cada duplicata da tabela. 
+SELECT Nome, Valor, Vencimento FROM duplicata;
+
+#Apresentar o número das duplicatas depositadas no banco Itaú
+SELECT Numero FROM duplicata WHERE Banco = 'ITAU';
+
+#Apresentar o número de duplicatas depositadas no banco Itaú 
+SELECT count(Numero) FROM duplicata WHERE Banco = 'ITAU';
+
+#Quais são as duplicatas (número, vencimento, valor e nome) que vencem no ano de 2017. 
+SELECT Numero, Vencimento, Valor, Nome FROM duplicata WHERE YEAR(Vencimento) =2017;
+
+#Apresentar as duplicatas (número, vencimento, valor e nome) que não estão depositadas nos bancos Itaú e Santander. 
+SELECT Numero, Vencimento, Valor, Nome FROM duplicata WHERE Banco != 'SANTANDER' OR 'ITAU';
+
+SELECT Numero,Valor,sum(Valor) FROM duplicata WHERE Nome = 'PAPELARIA SILVA';
+SELECT Numero,Valor FROM duplicata WHERE Nome = 'PAPELARIA SILVA';
+
+DELETE FROM duplicata WHERE Numero = 770710;
+
+SELECT * FROM duplicata ORDER BY Nome;
+
+SELECT * FROM duplicata ORDER BY Vencimento;
+
+UPDATE duplicata SET Banco='SANTANDER' WHERE Banco = 'BANCO DO BRASIL';
+
+SELECT * FROM duplicata WHERE Banco = 'BRADESCO';
+
+
+SELECT sum(Valor) FROM duplicata WHERE Vencimento in 
+(select Vencimento FROM duplicata where Vencimento > '2016-01-01' and Vencimento < '2016-12-31');
+
+SELECT sum(Valor) FROM duplicata WHERE Vencimento in
+(SELECT Vencimento FROM duplicata WHERE Vencimento >= '2016-08-01' AND Vencimento <= '2016-08-30');
+
+SELECT Valor * 1.15 as 'Valor com Multa' FROM duplicata WHERE Vencimento <= '2016-12=31';
+
+SELECT Valor * 1.05 as 'Valor com Multa' FROM duplicata WHERE Vencimento >= '2017-01-01' and '2017-12-31' AND Nome = 'LER E SABER';
+
+SELECT avg(Valor) FROM duplicata WHERE year(Vencimento) = '2016'; 
+
+SELECT * FROM duplicata WHERE Valor > 10000.00;
+
+SELECT sum(Valor) FROM duplicata WHERE Banco = 'SANTANDER';
+
+SELECT Nome FROM duplicata WHERE Banco = 'BRADESCO' OR Banco = 'ITAU';
